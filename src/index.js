@@ -1,34 +1,43 @@
-const express = require("express");
-const app = express();
-const port = "3000";
-app.use('/src/assets/css', express.static(__dirname + '/assets/css'));
+import express from "express";
+import handlebars from "express-handlebars";
+import bodyParser from "body-parser";
 
-// Template Engine
-const handlebars = require("express-handlebars");
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+// import { Produto } from "./models/Produto";
+
+const app = express();
+const PORT = 3000;
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+/**
+ * Configuração do Handlebars template engine.
+ */
 app.engine(
     "hbs",
     handlebars.engine({ defaultLayout: "main", extname: ".hbs" })
 );
 app.set("view engine", "hbs");
 
-// Bando de Dados
-const Sequelize = require("sequelize");
-const sequelize = new Sequelize("sistemacadastro", "root", "admin", {
-    host: "localhost",
-    dialect: "mysql",
-});
+/**
+ * Configuração do Body-Parser
+ */
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-// Rotas
+/**
+ * Configuração de arquivos estáticos
+ */
+app.use("/src/assets/css", express.static(__dirname + "/assets/css"));
+app.use("/src/assets/css", express.static(__dirname + "/assets/js"));
+
+/**
+ * Rotas do App
+ */
 app.get("/", (req, res) => {
     res.render("formulario");
 });
 
-// app.post("/add", (req, res) => {
-//     res.send("Formulário recebido.");
-// });
-
-app.listen(port, function () {
-    console.log(`http://localhost:${port}`);
+app.listen(PORT, function () {
+    console.log(`http://localhost:${PORT}`);
 });
-
-// console.log(__dirname)
