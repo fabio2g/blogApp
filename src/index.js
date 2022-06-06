@@ -11,7 +11,9 @@ const PORT = 3000;
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 /**
+ * -------------------------------------------
  * Configuração do Handlebars template engine.
+ * -------------------------------------------
  */
 app.engine(
     "hbs",
@@ -20,19 +22,33 @@ app.engine(
 app.set("view engine", "hbs");
 
 /**
+ * ---------------------------
  * Configuração do Body-Parser
+ * ---------------------------
  */
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 /**
+ * ----------------------------------
  * Configuração de arquivos estáticos
+ * ----------------------------------
  */
 app.use("/src/assets/css", express.static(__dirname + "/assets/css"));
 app.use("/src/assets/css", express.static(__dirname + "/assets/js"));
+app.use(
+    "/src/vendor/bootstrap/css",
+    express.static(__dirname + "/vendor/bootstrap/css")
+);
+app.use(
+    "/src/vendor/bootstrap/js",
+    express.static(__dirname + "/vendor/bootstrap/js")
+);
 
 /**
- * Rotas do App
+ * ---------------------
+ * Configuração de rotas
+ * ---------------------
  */
 app.get("/", (req, res) => {
     res.render("formulario");

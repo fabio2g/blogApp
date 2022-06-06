@@ -1,15 +1,30 @@
 <div class="box-form">
-    <h2>Formulário de Cadastro</h2>
-
-    <form action="/add" method="POST">
-        <label for="nome">Nome</label>
-        <input type="text" name="nome" required>
-        <label for="sobrenome">Sobrenome:</label>
-        <input type="text" name="sobrenome" required>
-        <label for="idade">Idade</label>
-        <input type="text" name="idade" required>
-        <label for="email">E-mail</label>
-        <input type="email" name="email" required>
-        <input type="submit" value="Cadastrar">
+   <form action="" class="row g-3">
+       <div class="col-md-6">
+            <label for="exampleFormControlInput1" class="form-label">Nome</label>
+            <input type="input" class="form-control" id="exampleFormControlInput1" placeholder="nome do produto">
+        </div>
+       <div class="col-md-6">
+            <label for="exampleFormControlInput1" class="form-label">Modelo</label>
+            <input type="input" class="form-control" id="exampleFormControlInput1" placeholder="modelo do produto">
+        </div>
+          <div class="col-md-4">
+            <label for="inputState" class="form-label">Categoria</label>
+            <select id="inputState" class="form-select">
+                <option selected>Choose...</option>
+                <option>...</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="inputZip" class="form-label">Valor</label>
+            <input type="text" class="form-control" id="inputZip">
+        </div>
+        <div class="col-md-4">
+            <label for="inputZip" class="form-label">Valor</label>
+            <div style="display: flex;">
+                <input type="text" class="form-control" id="inputZip">
+                <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+            </div>
+        </div>
     </form>
 </div>
