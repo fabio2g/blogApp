@@ -5,6 +5,14 @@
  */
 const Express = require("express");
 const App = Express();
+const PORT = 3000;
+/**
+ * ----------------------------------
+ * Configuração de arquivos estáticos
+ * ----------------------------------
+ */
+App.use("/assets/css", Express.static(__dirname + "/css"));
+App.use("/assets/js", Express.static(__dirname + "/js"));
 /**
  * ---------------------------
  * Configuração do Body-Parser
@@ -30,7 +38,7 @@ const Mongoose = require("mongoose");
 
 module.exports = {
     app: App,
-    PORT: 3000,
+    port: PORT,
     bodyParser: BodyParser,
     handlebars: Handlebars,
     mongoose: Mongoose,
