@@ -1,48 +1,6 @@
-/**
- * --------------------
- * Configuração express
- * --------------------
- */
-const express = require("express");
-const app = express();
-const PORT = 3000;
+const { app } = require("./config/appConfig");
+const { port } = require("./config/appConfig");
 
-/**
- * ------------------------------------------
- * Configuração do template engine handlebars
- * ------------------------------------------
- */
-const handlebars = require("express-handlebars");
-app.engine("handlebars", handlebars.engine({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
-
-/**
- * ---------------------------
- * Configuração do Body-Parser
- * ---------------------------
- */
-const bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-/**
- * ----------------------------------
- * Configuração de arquivos estáticos
- * ----------------------------------
- */
-app.use(express.static(__dirname + "/public"));
-
-/**
- * ---------------------
- * Configuração de rotas
- * ---------------------
- */
-const admin = require("./routes/admin");
-app.use("/admin", admin);
-
-/**
- * Configuração de rotas
- */
-app.listen(PORT, () => {
-    console.log(`http://localhost:${PORT}`);
+app.listen(port, () => {
+    console.log(`http://localhost:${port}`);
 });
