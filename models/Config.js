@@ -1,34 +1,30 @@
 /**
  * --------------------
- * Configuração Express
+ * Configuração express
  * --------------------
  */
-const Express = require("express");
-const App = Express();
+const express = require("express");
+const app = express();
 const PORT = 3000;
-/**
- * ----------------------------------
- * Configuração de arquivos estáticos
- * ----------------------------------
- */
-App.use("/assets/css", Express.static(__dirname + "/css"));
-App.use("/assets/js", Express.static(__dirname + "/js"));
+
 /**
  * ---------------------------
  * Configuração do Body-Parser
  * ---------------------------
  */
-const BodyParser = require("body-parser");
-App.use(BodyParser.urlencoded({ extended: true }));
-App.use(BodyParser.json());
+const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 /**
  * ------------------------------------------
- * Configuração do template engine Handlebars
+ * Configuração do template engine handlebars
  * ------------------------------------------
  */
-const Handlebars = require("express-handlebars");
-App.engine("handlebars", Handlebars.engine({ defaultLayout: "main" }));
-App.set("view engine", "handlebars");
+const handlebars = require("express-handlebars");
+app.engine("handlebars", handlebars.engine({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
 /**
  * ------------------------
  * Configuração do Mongoose
@@ -37,9 +33,10 @@ App.set("view engine", "handlebars");
 const Mongoose = require("mongoose");
 
 module.exports = {
-    app: App,
+    express: express,
+    app: app,
     port: PORT,
-    bodyParser: BodyParser,
-    handlebars: Handlebars,
+    bodyParser: bodyParser,
+    handlebars: handlebars,
     mongoose: Mongoose,
 };
