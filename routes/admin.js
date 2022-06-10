@@ -9,6 +9,4 @@ router.get("/post", (req, res) => {
     res.send("Posts");
 });
 
-module.exports = {
-    router: router,
-};
+module.exports = router;
