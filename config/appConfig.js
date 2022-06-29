@@ -33,6 +33,55 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + "/public"));
 
 /**
+ * ------------------------
+ * Concfiguração do mongodb
+ * ------------------------
+ */
+const mongoose = require("mongoose");
+mongoose.Promise = global.Promise;
+mongoose
+    .connect("mongodb://localhost/blogapp")
+    .then(() => {
+        console.log("[mongoose] conectado");
+    })
+    .catch((err) => {
+        console.log("[mongoose] " + err);
+    });
+
+/**
+ * -----------------------
+ * Configuração do Session
+ * -----------------------
+ */
+const session = require("express-session");
+app.use(
+    session({
+        secret: "curso de node",
+        resave: true,
+        saveUninitialized: true,
+    })
+);
+
+/**
+ * ---------------------
+ * Configuração do Flash
+ * ---------------------
+ */
+const flash = require("connect-flash");
+app.use(flash());
+
+/**
+ * --------------------------
+ * Configuração de Middleware
+ * --------------------------
+ */
+app.use((req, res, next) => {
+    res.locals.success_msg = req.flash("success_msg");
+    res.locals.error_msg = req.flash("error_msg");
+    next();
+});
+
+/**
  * ---------------------
  * Configuração de rotas
  * ---------------------
