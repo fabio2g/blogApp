@@ -4,16 +4,20 @@
 
 {{/each}}
 
-<h3>Nova postagem:</h3>
+<h3>Editar postagem:</h3>
 <div class="card">
     <div class="card-body">
-        <form action="/admin/postagens/nova" method="post">
+        <form action="/admin/postagens/edit" method="post">
+            <input type="hidden" value="{{postagem._id}}" name="id">
             <label for="titulo" class="form-label">Título:</label>
-            <input class="form-control" type="text" id="titulo" name="titulo" placeholder="Título da postagem" required>
+            <input class="form-control" type="text" id="titulo" name="titulo" placeholder="Título da postagem" 
+            value="{{postagem.titulo}}" required>
             <label for="slug" class="form-label mt-2">Slug:</label>
-            <input class="form-control" type="text" id="slug" name="slug" placeholder="Slug da categoria" required>  
+            <input class="form-control" type="text" id="slug" name="slug" placeholder="Slug da categoria"
+            value="{{postagem.slug}}" required>  
             <label for="descricao" class="form-label mt-2">Descrição:</label>
-            <input class="form-control" type="text" id="descricao" name="descricao" placeholder="Descrição da postagem" required> 
+            <input class="form-control" type="text" id="descricao" name="descricao" placeholder="Descrição da postagem" 
+            value="{{postagem.descricao}}" required> 
             <label for="categoria" class="form-label mt-2">Categoria:</label>
             <select class="form-select" name="categoria" id="categoria">
                 {{#each categorias}}
@@ -23,8 +27,8 @@
                 {{/each}}
             </select>
             <label for="conteudo" class="form-label mt-2">Conteúdo:</label>
-            <textarea class="form-control" name="conteudo" id="conteudo"></textarea>
-            <button type="submit" class="btn btn-success mt-4">Criar postagem</button>
+            <textarea class="form-control" name="conteudo" id="conteudo" required>{{postagem.conteudo}}</textarea>
+            <button type="submit" class="btn btn-success mt-4">Editar postagem</button>
         </form>
     </div>
 </div>

@@ -5,6 +5,14 @@ const mongoose = require("mongoose");
 require("../models/Categoria");
 const Categoria = mongoose.model("categorias");
 
+require("../models/Postagem");
+const Postagem = mongoose.model("postagens");
+
+/**
+ * ---------------------------
+ * Rota principal da aplicação
+ * ---------------------------
+ */
 router.get("/", (req, res) => {
     res.render("admin/index");
 });
@@ -186,7 +194,17 @@ router.post("/categorias/deletar", (req, res) => {
  * ---------------------------------------------------
  */
 router.get("/postagens", (req, res) => {
-    res.render("admin/postagens");
+    Postagem.find()
+        .lean()
+        .populate("categoria")
+        .sort({ date: "desc" })
+        .then((postagens) => {
+            res.render("admin/postagens", { postagens: postagens });
+        })
+        .catch((err) => {
+            req.flash("error_msg", "Erro ao listar as categorias");
+            res.redirect("/admin");
+        });
 });
 
 /**
@@ -206,14 +224,102 @@ router.get("/postagens/add", (req, res) => {
         });
 });
 
+/**
+ * ------------------------------------------------
+ * Rota responsável por adicionar uma nova postagem
+ * ------------------------------------------------
+ */
 router.post("/postagens/nova", (req, res) => {
-    const erro = [];
-
+    const erros = [];
+    //Validação aqui
     if (req.body.categoria == "0") {
-        erro.push({
-            msg: "Categoria inválida, por favor registre uma categoria!",
+        erros.push({
+            texto: "Categoria inválida, por favor registre uma categoria!",
         });
+        res.render("admin/addpostagens", { erros: erros });
     }
+
+    if (erros.length > 0) {
+        res.render("admin/postagens", { erros: erros });
+    } else {
+        const novaPostagem = {
+            titulo: req.body.titulo,
+            slug: req.body.slug,
+            descricao: req.body.descricao,
+            categoria: req.body.categoria,
+            conteudo: req.body.conteudo,
+        };
+
+        new Postagem(novaPostagem)
+            .save()
+            .then(() => {
+                req.flash("success_msg", "Postagem criada com sucessso!");
+                res.redirect("/admin/postagens");
+            })
+            .catch((err) => {
+                req.flash("error_msg", "Erro ao salvar postagem!");
+                res.redirect("/admin/postagens");
+            });
+    }
+});
+
+/**
+ * ------------------------------------------------------------
+ * Rota responsável por rederizar a view de edição de postagens
+ * ------------------------------------------------------------
+ */
+router.get("/postagens/edit/:id", (req, res) => {
+    Postagem.findOne({ _id: req.params.id })
+        .lean()
+        .then((postagem) => {
+            Categoria.find()
+                .lean()
+                .then((categorias) => {
+                    res.render("admin/editPostagens", {
+                        categorias: categorias,
+                        postagem: postagem,
+                    });
+                })
+                .catch((err) => {
+                    req.flash("error_msg", "Erro ao listar as categorias!");
+                    res.redirect("/admin/postagens");
+                });
+        })
+        .catch((err) => {
+            req.flash("error_msg", "Erro ao carregar formulário de edição");
+            res.redirect("admin/postagens");
+        });
+});
+
+/**
+ * ----------------------------------------------------------------------------------
+ * Rota responsável pela percistência de dados edidados na view de edição de postagem
+ * ----------------------------------------------------------------------------------
+ */
+router.post("/postagens/edit", (req, res) => {
+    Postagem.findOne({ _id: req.body.id })
+        .then((postagem) => {
+            postagem.titulo = req.body.titulo;
+            postagem.slug = req.body.slug;
+            postagem.descricao = req.body.descricao;
+            postagem.categoria = req.body.categoria;
+            postagem.conteudo = req.body.conteudo;
+
+            postagem
+                .save()
+                .then(() => {
+                    req.flash("success_msg", "Postagem editada com scesso!");
+                    res.redirect("/admin/postagens");
+                })
+                .catch((err) => {
+                    req.flash("error_msg", "Erro interno!");
+                    res.redirect("/admin/postagens");
+                });
+        })
+        .catch((err) => {
+            req.flash("error_msg", "Erro ao salvar a edição!");
+            res.redirect("/admin/postagens");
+        });
 });
 
 module.exports = router;
