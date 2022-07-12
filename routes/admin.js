@@ -13,9 +13,7 @@ const Postagem = mongoose.model("postagens");
  * Rota principal da aplicação
  * ---------------------------
  */
-router.get("/", (req, res) => {
-    res.render("admin/index");
-});
+
 
 router.get("/posts", (req, res) => {
     res.render("admincategorias");
@@ -308,7 +306,7 @@ router.post("/postagens/edit", (req, res) => {
             postagem
                 .save()
                 .then(() => {
-                    req.flash("success_msg", "Postagem editada com scesso!");
+                    req.flash("success_msg", "Postagem editada com sucesso!");
                     res.redirect("/admin/postagens");
                 })
                 .catch((err) => {
@@ -319,6 +317,24 @@ router.post("/postagens/edit", (req, res) => {
         .catch((err) => {
             req.flash("error_msg", "Erro ao salvar a edição!");
             res.redirect("/admin/postagens");
+        });
+});
+
+/**
+ * ---------------------------------------
+ * Rota responsável pro deletar a postagem
+ * ---------------------------------------
+ */
+router.get("/postagens/deletar/:id", (req, res) => {
+    Postagem.remove({ _id: req.params.id })
+        .lean()
+        .then(() => {
+            req.flash("success_msg", "Postagem deletada com sucesso!");
+            res.redirect("/admin/postagens");
+        })
+        .catch((error) => {
+            req.flash("error_msg", "Erro ao deletar postagem!");
+            res.redirect("admin/postagens");
         });
 });
 

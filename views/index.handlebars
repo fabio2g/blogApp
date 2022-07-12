@@ -1,0 +1,32 @@
+<div class="card" style="padding: 30px; background: #e9e9e9;">
+    <div class="card-body">
+        <h1 class="display-4">Bem vindo ao blog do Node</h1>
+        <p class="lead">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni, repellat! Beatae optio qui consequuntur numquam maxime 
+            eligendi ipsam totam non dicta mollitia laboriosam, ipsa libero accusantium, molestias ex aliquam! Harum!
+        </p>
+        <hr>
+        <p class="lead">
+            It uses utility classes fr typography and spacing to space
+        </p>
+        <p class="lead">
+            <a class="btn btn-primary" href="">Crie uma conta</a>
+        </p>
+    </div>
+</div>
+
+<h2 class="mt-4">Postagens recentes:</h2>
+{{#each postagens}}
+    <div class="card mt-3">
+        <div class="card-body">
+            <h3>{{titulo}}</h3>
+            <p>{{conteudo}}</p>
+            <a href="/postagem/{{slug}}"><button class="btn btn-success">Leia mais</button></a>
+            <hr>
+            <small>Categoria: {{categoria.nome}}</small><br>
+            <small>Data de publição: {{data}}</small>
+        </div>
+    </div>
+{{else}}
+    <h5>Nunhuma postagem</h5>
+{{/each}}
